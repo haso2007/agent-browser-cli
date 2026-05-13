@@ -141,7 +141,33 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           mapfile -t npm_packages < <(find dist/npm -type f -name '*.tgz' | sort)
-          gh release create "${GITHUB_REF_NAME}" dist/bin/* "${npm_packages[@]}" \
-            --title "${GITHUB_REF_NAME}" \
-            --notes "Rust/npm native release for macOS and Windows."
+          TAG_MESSAGE="$(git tag -l --format='%(contents)' "${GITHUB_REF_NAME}" | sed '/-----BEGIN PGP SIGNATURE-----/,$d' | sed '${/^$/d;}')"
+          DEFAULT_NOTES="Rust/npm native release for macOS and Windows."
+          if gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            EXISTING_NOTES="$(gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" --json body --jq '.body // ""')"
+            if [ -n "${TAG_MESSAGE}" ] && ! grep -Fq "${TAG_MESSAGE}" <<<"${EXISTING_NOTES}"; then
+              {
+                printf '%s\n' "${EXISTING_NOTES}"
+                [ -n "${EXISTING_NOTES}" ] && printf '\n'
+                printf '%s\n' "${TAG_MESSAGE}"
+              } > release-notes.md
+              gh release edit "${GITHUB_REF_NAME}" dist/bin/* "${npm_packages[@]}" \
+                --repo "${GITHUB_REPOSITORY}" \
+                --notes-file release-notes.md
+            else
+              gh release edit "${GITHUB_REF_NAME}" dist/bin/* "${npm_packages[@]}" \
+                --repo "${GITHUB_REPOSITORY}"
+            fi
+          else
+            if [ -n "${TAG_MESSAGE}" ]; then
+              printf '%s\n' "${TAG_MESSAGE}" > release-notes.md
+            else
+              printf '%s\n' "${DEFAULT_NOTES}" > release-notes.md
+            fi
+            gh release create "${GITHUB_REF_NAME}" dist/bin/* "${npm_packages[@]}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --title "${GITHUB_REF_NAME}" \
+              --notes-file release-notes.md
+          fi
