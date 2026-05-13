@@ -4,13 +4,14 @@ import path from "node:path";
 const [, , targetName, binaryPath] = process.argv;
 
 if (!targetName || !binaryPath) {
-  console.error("Usage: node scripts/package-platform.mjs <darwin-arm64|darwin-x64|win32-x64> <binary>");
+  console.error("Usage: node scripts/package-platform.mjs <darwin-arm64|darwin-x64|linux-x64|win32-x64> <binary>");
   process.exit(1);
 }
 
 const meta = {
   "darwin-arm64": { os: ["darwin"], cpu: ["arm64"], ext: "" },
   "darwin-x64": { os: ["darwin"], cpu: ["x64"], ext: "" },
+  "linux-x64": { os: ["linux"], cpu: ["x64"], ext: "" },
   "win32-x64": { os: ["win32"], cpu: ["x64"], ext: ".exe" }
 }[targetName];
 

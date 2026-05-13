@@ -9,6 +9,7 @@ function platformPackageName() {
   const arch = process.arch;
   if (platform === "darwin" && arch === "arm64") return "@sleepinsummer/agent-browser-cli-darwin-arm64";
   if (platform === "darwin" && arch === "x64") return "@sleepinsummer/agent-browser-cli-darwin-x64";
+  if (platform === "linux" && arch === "x64") return "@sleepinsummer/agent-browser-cli-linux-x64";
   if (platform === "win32" && arch === "x64") return "@sleepinsummer/agent-browser-cli-win32-x64";
   throw new Error(`Unsupported platform: ${platform}-${arch}`);
 }

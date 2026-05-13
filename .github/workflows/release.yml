@@ -26,6 +26,10 @@ jobs:
             os: macos-15-intel
             target: x86_64-apple-darwin
             binary: agent-browser-cli
+          - name: linux-x64
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            binary: agent-browser-cli
           - name: win32-x64
             os: windows-2022
             target: x86_64-pc-windows-msvc
@@ -144,7 +148,7 @@ jobs:
           set -euo pipefail
           mapfile -t npm_packages < <(find dist/npm -type f -name '*.tgz' | sort)
           TAG_MESSAGE="$(git tag -l --format='%(contents)' "${GITHUB_REF_NAME}" | sed '/-----BEGIN PGP SIGNATURE-----/,$d' | sed '${/^$/d;}')"
-          DEFAULT_NOTES="Rust/npm native release for macOS and Windows."
+          DEFAULT_NOTES="Rust/npm native release for macOS, Linux, and Windows."
           if gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
             EXISTING_NOTES="$(gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" --json body --jq '.body // ""')"
             if [ -n "${TAG_MESSAGE}" ] && ! grep -Fq "${TAG_MESSAGE}" <<<"${EXISTING_NOTES}"; then
