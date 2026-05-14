@@ -112,7 +112,9 @@ cargo build --release
 
 ## Chrome 扩展
 
-加载扩展目录：
+推荐从 [最新 Release](https://github.com/sleepinginsummer/agent-browser-cli/releases/latest) 下载 `chrome-extensions.zip`，下载后解压，Chrome 打开 `chrome://extensions`，开启“开发者模式”，点击“加载已解压的扩展程序”，选择解压后的 `tmwd_cdp_bridge` 目录。
+
+本地源码构建时，也可以直接加载扩展目录：
 
 ```text
 assets/tmwd_cdp_bridge

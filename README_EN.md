@@ -112,7 +112,9 @@ cargo build --release
 
 ## Chrome Extension
 
-Load this extension directory:
+Recommended: download `chrome-extensions.zip` from the [latest Release](https://github.com/sleepinginsummer/agent-browser-cli/releases/latest), extract it, open `chrome://extensions` in Chrome, enable `Developer mode`, click `Load unpacked`, and select the extracted `tmwd_cdp_bridge` directory.
+
+When building from local source, you can also load this extension directory directly:
 
 ```text
 assets/tmwd_cdp_bridge
