@@ -28,7 +28,7 @@
 
 - 当前版本：`0.2.5`
 - 支持平台：Windows（包括 WSL）/ Mac / Linux
-- 浏览器：Chrome / Chromium，需加载 `assets/tmwd_cdp_bridge`
+- 浏览器：Chrome，需加载拓展 `assets/tmwd_cdp_bridge`
 - Linux 支持前提：本机 Chrome / Chromium 需要支持安装扩展
 - WSL 支持前提：需使用 `WSL 2.0.0+`，并建议在 Windows `11 22H2+` 下启用 `networkingMode=mirrored`，以便 WSL 连接宿主机 `localhost` 上的 Chrome 桥接服务
 
@@ -119,6 +119,8 @@ assets/tmwd_cdp_bridge
 ```
 
 Chrome 需要至少打开一个正常网页标签页，不要只停留在 `about:blank` 或 `chrome://` 页面。
+
+扩展连接后会在页面右侧显示 Chrome 插件提示角标。角标支持拖动位置，鼠标悬浮时展开；10 秒无命令后自动隐藏，也可以点击 `本次隐藏` 手动隐藏，本次服务连接周期内不再显示，约 300 秒服务断开并下次重连后恢复。
 
 ## 快速自检
 
